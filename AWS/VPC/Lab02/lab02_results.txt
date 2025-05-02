@@ -1,0 +1,94 @@
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/AWS/VPC/Lab02$ ssh -A -i mykeypair01.pem ec2-user@98.82.14.234
+Last login: Fri May  2 15:12:39 2025 from 191.92.22.183
+   ,     #_
+   ~\_  ####_        Amazon Linux 2
+  ~~  \_#####\
+  ~~     \###|       AL2 End of Life is 2026-06-30.
+  ~~       \#/ ___
+   ~~       V~' '->
+    ~~~         /    A newer version of Amazon Linux is available!
+      ~~._.   _/
+         _/ _/       Amazon Linux 2023, GA and supported until 2028-03-15.
+       _/m/'           https://aws.amazon.com/linux/amazon-linux-2023/
+
+[ec2-user@ip-10-0-1-169 ~]$ ssh ec2-user@10.0.2.71
+Permission denied (publickey,gssapi-keyex,gssapi-with-mic).
+[ec2-user@ip-10-0-1-169 ~]$ eval "$(ssh-agent -s)"
+Agent pid 3459
+[ec2-user@ip-10-0-1-169 ~]$ ssh-add mykeypair01.pem
+mykeypair01.pem: No such file or directory
+[ec2-user@ip-10-0-1-169 ~]$ exit
+logout
+Connection to 98.82.14.234 closed.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/AWS/VPC/Lab02$ scp -i mykeypair01.pem mykeypair01.pem ec2-user@98.82.14.234:/home/ec2-user/
+mykeypair01.pem                                                                                                                                       100% 1678    21.3KB/s   00:00    
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/AWS/VPC/Lab02$ ssh -A -i mykeypair01.pem ec2-user@98.82.14.234
+Last login: Fri May  2 15:15:57 2025 from 191.92.22.183
+   ,     #_
+   ~\_  ####_        Amazon Linux 2
+  ~~  \_#####\
+  ~~     \###|       AL2 End of Life is 2026-06-30.
+  ~~       \#/ ___
+   ~~       V~' '->
+    ~~~         /    A newer version of Amazon Linux is available!
+      ~~._.   _/
+         _/ _/       Amazon Linux 2023, GA and supported until 2028-03-15.
+       _/m/'           https://aws.amazon.com/linux/amazon-linux-2023/
+
+[ec2-user@ip-10-0-1-169 ~]$ ls -a
+.  ..  .bash_history  .bash_logout  .bash_profile  .bashrc  mykeypair01.pem  .ssh
+[ec2-user@ip-10-0-1-169 ~]$ chmod 400 mykeypair01.pem
+[ec2-user@ip-10-0-1-169 ~]$ ssh -i mykeypair01.pem ec2-user@10.0.2.71
+   ,     #_
+   ~\_  ####_        Amazon Linux 2
+  ~~  \_#####\
+  ~~     \###|       AL2 End of Life is 2026-06-30.
+  ~~       \#/ ___
+   ~~       V~' '->
+    ~~~         /    A newer version of Amazon Linux is available!
+      ~~._.   _/
+         _/ _/       Amazon Linux 2023, GA and supported until 2028-03-15.
+       _/m/'           https://aws.amazon.com/linux/amazon-linux-2023/
+
+[ec2-user@ip-10-0-2-71 ~]$ 
+[ec2-user@ip-10-0-2-71 ~]$ 
+[ec2-user@ip-10-0-2-71 ~]$ time
+
+real	0m0.000s
+user	0m0.000s
+sys	0m0.000s
+[ec2-user@ip-10-0-2-71 ~]$ uname -a
+Linux ip-10-0-2-71.ec2.internal 4.14.355-276.639.amzn2.x86_64 #1 SMP Sat Apr 19 01:30:55 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+[ec2-user@ip-10-0-2-71 ~]$ curl https://amazon.com
+<html>
+<head><title>301 Moved Permanently</title></head>
+<body>
+<center><h1>301 Moved Permanently</h1></center>
+<hr><center>Server</center>
+</body>
+</html>
+[ec2-user@ip-10-0-2-71 ~]$ exit
+logout
+Connection to 10.0.2.71 closed.
+[ec2-user@ip-10-0-1-169 ~]$ exit
+logout
+Connection to 98.82.14.234 closed.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/AWS/VPC/Lab02$ terraform state list
+data.aws_ami.amazon_linux
+aws_eip.nat_eip
+aws_instance.ec2_private
+aws_instance.ec2_public
+aws_internet_gateway.igw
+aws_nat_gateway.nat
+aws_route_table.private
+aws_route_table.public
+aws_route_table_association.private_assoc
+aws_route_table_association.public_assoc
+aws_security_group.private_sg
+aws_security_group.public_sg
+aws_subnet.private
+aws_subnet.public
+aws_vpc.main
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/AWS/VPC/Lab02$ 
+
+
