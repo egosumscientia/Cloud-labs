@@ -1,0 +1,127 @@
+  # azurerm_network_interface.lab_nic will be created
+  + resource "azurerm_network_interface" "lab_nic" {
+      + accelerated_networking_enabled = false
+      + applied_dns_servers            = (known after apply)
+      + id                             = (known after apply)
+      + internal_domain_name_suffix    = (known after apply)
+      + ip_forwarding_enabled          = false
+      + location                       = "eastus"
+      + mac_address                    = (known after apply)
+      + name                           = "nic-lab"
+      + private_ip_address             = (known after apply)
+      + private_ip_addresses           = (known after apply)
+      + resource_group_name            = "rg-vnet-lab"
+      + virtual_machine_id             = (known after apply)
+
+      + ip_configuration {
+          + gateway_load_balancer_frontend_ip_configuration_id = (known after apply)
+          + name                                               = "ipconfig1"
+          + primary                                            = (known after apply)
+          + private_ip_address                                 = (known after apply)
+          + private_ip_address_allocation                      = "Dynamic"
+          + private_ip_address_version                         = "IPv4"
+          + public_ip_address_id                               = (known after apply)
+          + subnet_id                                          = "/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/virtualNetworks/vnet-lab/subnets/subnet-lab"
+        }
+    }
+
+  # azurerm_network_interface_security_group_association.lab_nic_nsg will be created
+  + resource "azurerm_network_interface_security_group_association" "lab_nic_nsg" {
+      + id                        = (known after apply)
+      + network_interface_id      = (known after apply)
+      + network_security_group_id = "/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/networkSecurityGroups/nsg-lab"
+    }
+
+  # azurerm_public_ip.lab_ip will be created
+  + resource "azurerm_public_ip" "lab_ip" {
+      + allocation_method       = "Static"
+      + ddos_protection_mode    = "VirtualNetworkInherited"
+      + fqdn                    = (known after apply)
+      + id                      = (known after apply)
+      + idle_timeout_in_minutes = 4
+      + ip_address              = (known after apply)
+      + ip_version              = "IPv4"
+      + location                = "eastus"
+      + name                    = "lab-ip"
+      + resource_group_name     = "rg-vnet-lab"
+      + sku                     = "Standard"
+      + sku_tier                = "Regional"
+    }
+
+  # azurerm_windows_virtual_machine.lab_vm will be created
+  + resource "azurerm_windows_virtual_machine" "lab_vm" {
+      + admin_password                                         = (sensitive value)
+      + admin_username                                         = "azureuser"
+      + allow_extension_operations                             = true
+      + bypass_platform_safety_checks_on_user_schedule_enabled = false
+      + computer_name                                          = (known after apply)
+      + disk_controller_type                                   = (known after apply)
+      + enable_automatic_updates                               = true
+      + extensions_time_budget                                 = "PT1H30M"
+      + hotpatching_enabled                                    = false
+      + id                                                     = (known after apply)
+      + location                                               = "eastus"
+      + max_bid_price                                          = -1
+      + name                                                   = "vm-lab"
+      + network_interface_ids                                  = (known after apply)
+      + patch_assessment_mode                                  = "ImageDefault"
+      + patch_mode                                             = "AutomaticByOS"
+      + platform_fault_domain                                  = -1
+      + priority                                               = "Regular"
+      + private_ip_address                                     = (known after apply)
+      + private_ip_addresses                                   = (known after apply)
+      + provision_vm_agent                                     = true
+      + public_ip_address                                      = (known after apply)
+      + public_ip_addresses                                    = (known after apply)
+      + resource_group_name                                    = "rg-vnet-lab"
+      + size                                                   = "Standard_B1s"
+      + virtual_machine_id                                     = (known after apply)
+      + vm_agent_platform_updates_enabled                      = (known after apply)
+
+      + os_disk {
+          + caching                   = "ReadWrite"
+          + disk_size_gb              = (known after apply)
+          + id                        = (known after apply)
+          + name                      = "osdisk"
+          + storage_account_type      = "Standard_LRS"
+          + write_accelerator_enabled = false
+        }
+
+      + source_image_reference {
+          + offer     = "WindowsServer"
+          + publisher = "MicrosoftWindowsServer"
+          + sku       = "2019-Datacenter"
+          + version   = "latest"
+        }
+
+      + termination_notification (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+azurerm_public_ip.lab_ip: Creating...
+azurerm_public_ip.lab_ip: Creation complete after 6s [id=/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/publicIPAddresses/lab-ip]
+azurerm_network_interface.lab_nic: Creating...
+azurerm_network_interface.lab_nic: Creation complete after 7s [id=/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/networkInterfaces/nic-lab]
+azurerm_network_interface_security_group_association.lab_nic_nsg: Creating...
+azurerm_windows_virtual_machine.lab_vm: Creating...
+azurerm_network_interface_security_group_association.lab_nic_nsg: Creation complete after 6s [id=/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/networkInterfaces/nic-lab|/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Network/networkSecurityGroups/nsg-lab]
+azurerm_windows_virtual_machine.lab_vm: Still creating... [10s elapsed]
+azurerm_windows_virtual_machine.lab_vm: Still creating... [20s elapsed]
+azurerm_windows_virtual_machine.lab_vm: Still creating... [30s elapsed]
+azurerm_windows_virtual_machine.lab_vm: Creation complete after 35s [id=/subscriptions/5f55b5a1-09ef-4b87-b02d-30e1a8347b3d/resourceGroups/rg-vnet-lab/providers/Microsoft.Compute/virtualMachines/vm-lab]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/Azure/Vnet/Lab01$ az vm get-instance-view --name vm-lab --resource-group rg-vnet-lab --query "instanceView.statuses[?starts_with(code, 'PowerState')].displayStatus" -o tsv
+VM running
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/Azure/Vnet/Lab01$ az vm show -g rg-vnet-lab -n vm-lab --query "storageProfile.imageReference" -o yaml
+communityGalleryImageId: null
+exactVersion: 17763.7240.250409
+id: null
+offer: WindowsServer
+publisher: MicrosoftWindowsServer
+sharedGalleryImageId: null
+sku: 2019-Datacenter
+version: latest
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/Azure/Vnet/Lab01$ nc -zv 52.186.29.29 3389
+Connection to 52.186.29.29 3389 port [tcp/ms-wbt-server] succeeded!
+

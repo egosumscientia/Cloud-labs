@@ -1,0 +1,482 @@
+google_compute_network.custom_vpc: Creating...
+╷
+│ Error: Error creating Network: googleapi: Error 403: Compute Engine API has not been used in project tu-id-de-proyecto before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=tu-id-de-proyecto then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+│ Details:
+│ [
+│   {
+│     "@type": "type.googleapis.com/google.rpc.ErrorInfo",
+│     "domain": "googleapis.com",
+│     "metadata": {
+│       "activationUrl": "https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=tu-id-de-proyecto",
+│       "consumer": "projects/tu-id-de-proyecto",
+│       "containerInfo": "tu-id-de-proyecto",
+│       "service": "compute.googleapis.com",
+│       "serviceTitle": "Compute Engine API"
+│     },
+│     "reason": "SERVICE_DISABLED"
+│   },
+│   {
+│     "@type": "type.googleapis.com/google.rpc.LocalizedMessage",
+│     "locale": "en-US",
+│     "message": "Compute Engine API has not been used in project tu-id-de-proyecto before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=tu-id-de-proyecto then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry."
+│   },
+│   {
+│     "@type": "type.googleapis.com/google.rpc.Help",
+│     "links": [
+│       {
+│         "description": "Google developers console API activation",
+│         "url": "https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=tu-id-de-proyecto"
+│       }
+│     ]
+│   }
+│ ]
+│ , accessNotConfigured
+│ 
+│   with google_compute_network.custom_vpc,
+│   on main.tf line 7, in resource "google_compute_network" "custom_vpc":
+│    7: resource "google_compute_network" "custom_vpc" {
+│ 
+╵
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ terraform plan -var-file="terraform.tfvars"
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_firewall.allow_ssh will be created
+  + resource "google_compute_firewall" "allow_ssh" {
+      + creation_timestamp = (known after apply)
+      + destination_ranges = (known after apply)
+      + direction          = (known after apply)
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "allow-ssh"
+      + network            = "custom-vpc"
+      + priority           = 1000
+      + project            = "lab01-vpc"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "0.0.0.0/0",
+        ]
+      + target_tags        = [
+          + "ssh",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+            ]
+          + protocol = "tcp"
+        }
+    }
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward          = false
+      + cpu_platform            = (known after apply)
+      + creation_timestamp      = (known after apply)
+      + current_status          = (known after apply)
+      + deletion_protection     = false
+      + effective_labels        = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + id                      = (known after apply)
+      + instance_id             = (known after apply)
+      + label_fingerprint       = (known after apply)
+      + machine_type            = "e2-micro"
+      + metadata_fingerprint    = (known after apply)
+      + metadata_startup_script = "echo Hello from the VM > /var/log/startup.log"
+      + min_cpu_platform        = (known after apply)
+      + name                    = "vpc-vm"
+      + project                 = "lab01-vpc"
+      + self_link               = (known after apply)
+      + tags                    = [
+          + "ssh",
+        ]
+      + tags_fingerprint        = (known after apply)
+      + terraform_labels        = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + zone                    = "us-central1-a"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + guest_os_features          = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + architecture           = (known after apply)
+              + image                  = "debian-cloud/debian-12"
+              + labels                 = (known after apply)
+              + provisioned_iops       = (known after apply)
+              + provisioned_throughput = (known after apply)
+              + resource_policies      = (known after apply)
+              + size                   = (known after apply)
+              + snapshot               = (known after apply)
+              + type                   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config (known after apply)
+
+      + guest_accelerator (known after apply)
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = (known after apply)
+          + network_attachment          = (known after apply)
+          + network_ip                  = (known after apply)
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity (known after apply)
+
+      + scheduling (known after apply)
+    }
+
+  # google_compute_network.custom_vpc will be created
+  + resource "google_compute_network" "custom_vpc" {
+      + auto_create_subnetworks                   = false
+      + bgp_always_compare_med                    = (known after apply)
+      + bgp_best_path_selection_mode              = (known after apply)
+      + bgp_inter_region_cost                     = (known after apply)
+      + delete_default_routes_on_create           = false
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = (known after apply)
+      + name                                      = "custom-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + network_id                                = (known after apply)
+      + numeric_id                                = (known after apply)
+      + project                                   = "lab01-vpc"
+      + routing_mode                              = (known after apply)
+      + self_link                                 = (known after apply)
+    }
+
+  # google_compute_subnetwork.custom_subnet will be created
+  + resource "google_compute_subnetwork" "custom_subnet" {
+      + creation_timestamp         = (known after apply)
+      + enable_flow_logs           = (known after apply)
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + internal_ipv6_prefix       = (known after apply)
+      + ip_cidr_range              = "10.0.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + ipv6_gce_endpoint          = (known after apply)
+      + name                       = "custom-subnet"
+      + network                    = (known after apply)
+      + private_ip_google_access   = (known after apply)
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "lab01-vpc"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+      + state                      = (known after apply)
+      + subnetwork_id              = (known after apply)
+
+      + secondary_ip_range (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + instance_ip = (known after apply)
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ terraform apply -var-file="terraform.tfvars"
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # google_compute_firewall.allow_ssh will be created
+  + resource "google_compute_firewall" "allow_ssh" {
+      + creation_timestamp = (known after apply)
+      + destination_ranges = (known after apply)
+      + direction          = (known after apply)
+      + enable_logging     = (known after apply)
+      + id                 = (known after apply)
+      + name               = "allow-ssh"
+      + network            = "custom-vpc"
+      + priority           = 1000
+      + project            = "lab01-vpc"
+      + self_link          = (known after apply)
+      + source_ranges      = [
+          + "0.0.0.0/0",
+        ]
+      + target_tags        = [
+          + "ssh",
+        ]
+
+      + allow {
+          + ports    = [
+              + "22",
+            ]
+          + protocol = "tcp"
+        }
+    }
+
+  # google_compute_instance.vm_instance will be created
+  + resource "google_compute_instance" "vm_instance" {
+      + can_ip_forward          = false
+      + cpu_platform            = (known after apply)
+      + creation_timestamp      = (known after apply)
+      + current_status          = (known after apply)
+      + deletion_protection     = false
+      + effective_labels        = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + id                      = (known after apply)
+      + instance_id             = (known after apply)
+      + label_fingerprint       = (known after apply)
+      + machine_type            = "e2-micro"
+      + metadata_fingerprint    = (known after apply)
+      + metadata_startup_script = "echo Hello from the VM > /var/log/startup.log"
+      + min_cpu_platform        = (known after apply)
+      + name                    = "vpc-vm"
+      + project                 = "lab01-vpc"
+      + self_link               = (known after apply)
+      + tags                    = [
+          + "ssh",
+        ]
+      + tags_fingerprint        = (known after apply)
+      + terraform_labels        = {
+          + "goog-terraform-provisioned" = "true"
+        }
+      + zone                    = "us-central1-a"
+
+      + boot_disk {
+          + auto_delete                = true
+          + device_name                = (known after apply)
+          + disk_encryption_key_sha256 = (known after apply)
+          + guest_os_features          = (known after apply)
+          + kms_key_self_link          = (known after apply)
+          + mode                       = "READ_WRITE"
+          + source                     = (known after apply)
+
+          + initialize_params {
+              + architecture           = (known after apply)
+              + image                  = "debian-cloud/debian-12"
+              + labels                 = (known after apply)
+              + provisioned_iops       = (known after apply)
+              + provisioned_throughput = (known after apply)
+              + resource_policies      = (known after apply)
+              + size                   = (known after apply)
+              + snapshot               = (known after apply)
+              + type                   = (known after apply)
+            }
+        }
+
+      + confidential_instance_config (known after apply)
+
+      + guest_accelerator (known after apply)
+
+      + network_interface {
+          + internal_ipv6_prefix_length = (known after apply)
+          + ipv6_access_type            = (known after apply)
+          + ipv6_address                = (known after apply)
+          + name                        = (known after apply)
+          + network                     = (known after apply)
+          + network_attachment          = (known after apply)
+          + network_ip                  = (known after apply)
+          + stack_type                  = (known after apply)
+          + subnetwork                  = (known after apply)
+          + subnetwork_project          = (known after apply)
+
+          + access_config {
+              + nat_ip       = (known after apply)
+              + network_tier = (known after apply)
+            }
+        }
+
+      + reservation_affinity (known after apply)
+
+      + scheduling (known after apply)
+    }
+
+  # google_compute_network.custom_vpc will be created
+  + resource "google_compute_network" "custom_vpc" {
+      + auto_create_subnetworks                   = false
+      + bgp_always_compare_med                    = (known after apply)
+      + bgp_best_path_selection_mode              = (known after apply)
+      + bgp_inter_region_cost                     = (known after apply)
+      + delete_default_routes_on_create           = false
+      + gateway_ipv4                              = (known after apply)
+      + id                                        = (known after apply)
+      + internal_ipv6_range                       = (known after apply)
+      + mtu                                       = (known after apply)
+      + name                                      = "custom-vpc"
+      + network_firewall_policy_enforcement_order = "AFTER_CLASSIC_FIREWALL"
+      + network_id                                = (known after apply)
+      + numeric_id                                = (known after apply)
+      + project                                   = "lab01-vpc"
+      + routing_mode                              = (known after apply)
+      + self_link                                 = (known after apply)
+    }
+
+  # google_compute_subnetwork.custom_subnet will be created
+  + resource "google_compute_subnetwork" "custom_subnet" {
+      + creation_timestamp         = (known after apply)
+      + enable_flow_logs           = (known after apply)
+      + external_ipv6_prefix       = (known after apply)
+      + fingerprint                = (known after apply)
+      + gateway_address            = (known after apply)
+      + id                         = (known after apply)
+      + internal_ipv6_prefix       = (known after apply)
+      + ip_cidr_range              = "10.0.0.0/24"
+      + ipv6_cidr_range            = (known after apply)
+      + ipv6_gce_endpoint          = (known after apply)
+      + name                       = "custom-subnet"
+      + network                    = (known after apply)
+      + private_ip_google_access   = (known after apply)
+      + private_ipv6_google_access = (known after apply)
+      + project                    = "lab01-vpc"
+      + purpose                    = (known after apply)
+      + region                     = "us-central1"
+      + self_link                  = (known after apply)
+      + stack_type                 = (known after apply)
+      + state                      = (known after apply)
+      + subnetwork_id              = (known after apply)
+
+      + secondary_ip_range (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + instance_ip = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+google_compute_network.custom_vpc: Creating...
+google_compute_network.custom_vpc: Still creating... [10s elapsed]
+google_compute_network.custom_vpc: Still creating... [20s elapsed]
+google_compute_network.custom_vpc: Creation complete after 23s [id=projects/lab01-vpc/global/networks/custom-vpc]
+google_compute_firewall.allow_ssh: Creating...
+google_compute_subnetwork.custom_subnet: Creating...
+google_compute_subnetwork.custom_subnet: Still creating... [10s elapsed]
+google_compute_firewall.allow_ssh: Still creating... [10s elapsed]
+google_compute_firewall.allow_ssh: Creation complete after 12s [id=projects/lab01-vpc/global/firewalls/allow-ssh]
+google_compute_subnetwork.custom_subnet: Creation complete after 12s [id=projects/lab01-vpc/regions/us-central1/subnetworks/custom-subnet]
+google_compute_instance.vm_instance: Creating...
+google_compute_instance.vm_instance: Still creating... [10s elapsed]
+google_compute_instance.vm_instance: Still creating... [20s elapsed]
+google_compute_instance.vm_instance: Creation complete after 30s [id=projects/lab01-vpc/zones/us-central1-a/instances/vpc-vm]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+instance_ip = "34.60.105.57"
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ gcloud compute ssh vpc-vm --zone=us-central1-a
+WARNING: The private SSH key file for gcloud does not exist.
+WARNING: The public SSH key file for gcloud does not exist.
+WARNING: You do not have an SSH key for gcloud.
+WARNING: SSH keygen will be executed to generate a key.
+Generating public/private rsa key pair.
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/pauloenrique/.ssh/google_compute_engine
+Your public key has been saved in /home/pauloenrique/.ssh/google_compute_engine.pub
+The key fingerprint is:
+SHA256:oE2Ytj9yCm5n0R6cWuPvpXaifejfiIt5wq7mAq9xz1U pauloenrique@pauloenrique-Latitude-E7450
+The key's randomart image is:
++---[RSA 3072]----+
+|                 |
+|     o           |
+|    + o          |
+|   . = .         |
+|    oo..E        |
+|.   ..B.         |
+|.oo .B=o ..      |
+| +++=====+oo     |
+|.o.**o=OO*o .    |
++----[SHA256]-----+
+ERROR: (gcloud.compute.ssh) The required property [project] is not currently set.
+It can be set on a per-command basis by re-running your command with the [--project] flag.
+
+You may set it for your current workspace by running:
+
+  $ gcloud config set project VALUE
+
+or it can be set temporarily by the environment variable [CLOUDSDK_CORE_PROJECT]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ gcloud config set project lab01-vpc
+WARNING: Your active project does not match the quota project in your local Application Default Credentials file. This might result in unexpected quota issues.
+
+To update your Application Default Credentials quota project, use the `gcloud auth application-default set-quota-project` command.
+Updated property [core/project].
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ gcloud config list --format="value(core.project)"
+lab01-vpc
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ gcloud compute ssh vpc-vm --zone=us-central1-a
+Updating project ssh metadata...⠛Updated [https://www.googleapis.com/compute/v1/projects/lab01-vpc].                                                                                   
+Updating project ssh metadata...done.                                                                                                                                                  
+Waiting for SSH key to propagate.
+Warning: Permanently added 'compute.5512529216823470993' (ED25519) to the list of known hosts.
+Linux vpc-vm 6.1.0-33-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.133-1 (2025-04-10) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+pauloenrique@vpc-vm:~$ date
+Fri May  2 00:48:08 UTC 2025
+pauloenrique@vpc-vm:~$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ terraform state list
+google_compute_firewall.allow_ssh
+google_compute_instance.vm_instance
+google_compute_network.custom_vpc
+google_compute_subnetwork.custom_subnet
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab01$ gcloud compute ssh vpc-vm --zone=us-central1-a
+Linux vpc-vm 6.1.0-33-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.133-1 (2025-04-10) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Fri May  2 00:47:34 2025 from 191.92.22.183
+pauloenrique@vpc-vm:~$ ping -c 4 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=115 time=2.10 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=115 time=0.305 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=115 time=0.378 ms
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=115 time=0.319 ms
+
+--- 8.8.8.8 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3051ms
+rtt min/avg/max/mdev = 0.305/0.776/2.102/0.766 ms
+pauloenrique@vpc-vm:~$ 
+
+

@@ -1,0 +1,14 @@
+# Archivos y directorios de Terraform
+*.tfstate
+*.tfstate.backup
+terraform.tfstate*
+terraform.tfvars
+.terraform/
+.terraform.lock.hcl
+
+# Archivos de logs y debugging
+crash.log
+
+# Archivos de credenciales sensibles (si los defines localmente)
+*.pem
+*.key
