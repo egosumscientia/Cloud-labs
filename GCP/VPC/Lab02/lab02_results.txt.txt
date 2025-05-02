@@ -1,0 +1,107 @@
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ gcloud compute firewall-rules describe default-allow-ssh --project=lab02-vpc --format="json(network,targetTags)"
+{
+  "network": "https://www.googleapis.com/compute/v1/projects/lab02-vpc/global/networks/default"
+}
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ gcloud compute instances describe vm-us --zone=us-central1-a --project=lab02-vpc --format="json(tags)"
+{
+  "tags": {
+    "fingerprint": "1ckWMlANRvY=",
+    "items": [
+      "internal-test",
+      "ssh",
+      "ssh-enabled"
+    ]
+  }
+}
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ gcloud compute firewall-rules create allow-ssh-custom-vpc \
+  --project=lab02-vpc \
+  --network=custom-vpc \
+  --allow=tcp:22 \
+  --source-ranges=0.0.0.0/0 \
+  --target-tags=ssh
+Creating firewall...⠹Created [https://www.googleapis.com/compute/v1/projects/lab02-vpc/global/firewalls/allow-ssh-custom-vpc].                                                         
+Creating firewall...done.                                                                                                                                                              
+NAME                  NETWORK     DIRECTION  PRIORITY  ALLOW   DENY  DISABLED
+allow-ssh-custom-vpc  custom-vpc  INGRESS    1000      tcp:22        False
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ gcloud compute ssh vm-us --zone=us-central1-a --project=lab02-vpc
+Warning: Permanently added 'compute.8647673154685666394' (ED25519) to the list of known hosts.
+Linux vm-us 6.1.0-33-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.133-1 (2025-04-10) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+pauloenrique@vm-us:~$ date
+Fri May  2 22:28:21 UTC 2025
+pauloenrique@vm-us:~$ ping 10.20.0.2
+PING 10.20.0.2 (10.20.0.2) 56(84) bytes of data.
+64 bytes from 10.20.0.2: icmp_seq=1 ttl=64 time=111 ms
+64 bytes from 10.20.0.2: icmp_seq=2 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=3 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=4 ttl=64 time=111 ms
+64 bytes from 10.20.0.2: icmp_seq=5 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=6 ttl=64 time=111 ms
+64 bytes from 10.20.0.2: icmp_seq=7 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=8 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=9 ttl=64 time=110 ms
+64 bytes from 10.20.0.2: icmp_seq=10 ttl=64 time=110 ms
+^C
+--- 10.20.0.2 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9004ms
+rtt min/avg/max/mdev = 110.375/110.567/111.392/0.280 ms
+pauloenrique@vm-us:~$ exit
+logout
+Connection to 34.9.88.142 closed.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ terraform state list
+module.firewall.google_compute_firewall.allow-internal
+module.subnet_europe.google_compute_subnetwork.subnet
+module.subnet_us.google_compute_subnetwork.subnet
+module.vm_europe.google_compute_instance.vm_instance
+module.vm_us.google_compute_instance.vm_instance
+module.vpc.google_compute_network.vpc_network
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ gcloud compute ssh vm-europe --zone=europe-west1-b --project=lab02-vpc
+Warning: Permanently added 'compute.446857248174015582' (ED25519) to the list of known hosts.
+Linux vm-europe 6.1.0-33-cloud-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.133-1 (2025-04-10) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+pauloenrique@vm-europe:~$ ping -c 4 10.10.0.2
+PING 10.10.0.2 (10.10.0.2) 56(84) bytes of data.
+64 bytes from 10.10.0.2: icmp_seq=1 ttl=64 time=105 ms
+64 bytes from 10.10.0.2: icmp_seq=2 ttl=64 time=104 ms
+64 bytes from 10.10.0.2: icmp_seq=3 ttl=64 time=104 ms
+64 bytes from 10.10.0.2: icmp_seq=4 ttl=64 time=104 ms
+
+--- 10.10.0.2 ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss, time 3002ms
+rtt min/avg/max/mdev = 103.883/104.175/104.995/0.473 ms
+pauloenrique@vm-europe:~$ 
+pauloenrique@vm-europe:~$ exit
+logout
+Connection to 34.38.185.193 closed.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ terraform list state
+Terraform has no command named "list". Did you mean "test"?
+
+To see all of Terraform's top-level commands, run:
+  terraform -help
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ terraform state list
+module.firewall.google_compute_firewall.allow-internal
+module.subnet_europe.google_compute_subnetwork.subnet
+module.subnet_us.google_compute_subnetwork.subnet
+module.vm_europe.google_compute_instance.vm_instance
+module.vm_us.google_compute_instance.vm_instance
+module.vpc.google_compute_network.vpc_network
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Cloud-Labs/GCP/VPC/Lab02$ 
+
+
+
